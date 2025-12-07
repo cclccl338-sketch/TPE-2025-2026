@@ -1,4 +1,4 @@
-const CACHE_NAME = 'taipei-journey-v1';
+const CACHE_NAME = 'taipei-journey-v2';
 const urlsToCache = [
   './',
   './index.html',
@@ -6,10 +6,10 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
+  self.skipWaiting(); // Force activation
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        // Attempt to cache core files, but don't fail installation if one fails
         return cache.addAll(urlsToCache).catch(err => {
             console.warn('Failed to cache some assets during install', err);
         });
@@ -18,7 +18,6 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Network first strategy for API/Dynamic content, Cache fallback for static
   event.respondWith(
     fetch(event.request)
       .catch(() => {
@@ -40,4 +39,5 @@ self.addEventListener('activate', event => {
       );
     })
   );
+  return self.clients.claim();
 });

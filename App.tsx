@@ -23,14 +23,21 @@ const App: React.FC = () => {
   
   // Initialize trip data with all dates
   const [tripData, setTripData] = useState<TripData>(() => {
-      const saved = localStorage.getItem('taipei_trip_data');
-      if (saved) {
-          const parsed = JSON.parse(saved);
-          // Ensure arrays exist for older saved data
-          if (!parsed.shortlist) parsed.shortlist = [];
-          if (!parsed.packingList) parsed.packingList = [];
-          return parsed;
+      try {
+        const saved = localStorage.getItem('taipei_trip_data');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            // Ensure arrays exist for older saved data
+            if (!parsed.shortlist) parsed.shortlist = [];
+            if (!parsed.packingList) parsed.packingList = [];
+            return parsed;
+        }
+      } catch (error) {
+        console.error("Failed to parse trip data, resetting to default:", error);
+        // If local storage is corrupted, we fall through to default initialization
+        // This prevents the "Blank Screen" crash
       }
+
       const dates = getDatesInRange(new Date(START_DATE), new Date(END_DATE));
       const initialItinerary: Record<string, any> = {};
       dates.forEach(d => {
@@ -41,7 +48,11 @@ const App: React.FC = () => {
 
   // Persist data
   useEffect(() => {
-    localStorage.setItem('taipei_trip_data', JSON.stringify(tripData));
+    try {
+      localStorage.setItem('taipei_trip_data', JSON.stringify(tripData));
+    } catch (e) {
+      console.error("Failed to save data", e);
+    }
   }, [tripData]);
 
   const handleNavigateToDay = (date: string) => {
