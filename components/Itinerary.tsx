@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TripData, Activity, ActivityType, START_DATE } from '../types';
+import { TripData, Activity, ActivityType, START_DATE, generateUUID } from '../types';
 import Button from './Button';
 import { generateDaySuggestion } from '../services/geminiService';
 
@@ -70,7 +70,7 @@ const Itinerary: React.FC<ItineraryProps> = ({ tripData, setTripData, initialDat
 
   const handleSaveActivity = () => {
       const activity: Activity = {
-          id: crypto.randomUUID(),
+          id: generateUUID(),
           time: newActivity.time || '00:00',
           location: newActivity.location || 'Untitled Activity', // Default if empty
           description: newActivity.description || '',

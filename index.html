@@ -29,43 +29,23 @@
         scrollbar-width: none;
       }
     </style>
-  <script type="importmap">
+<script type="importmap">
 {
   "imports": {
-    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
     "react": "https://aistudiocdn.com/react@^19.2.1",
     "react/": "https://aistudiocdn.com/react@^19.2.1/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
     "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
-    "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.1/client",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/"
+    "vite": "https://aistudiocdn.com/vite@^7.2.6",
+    "@vitejs/plugin-react": "https://aistudiocdn.com/@vitejs/plugin-react@^5.1.1"
   }
 }
 </script>
 </head>
   <body class="bg-[#FAF9F6] text-[#1A120B] font-sans antialiased h-screen w-screen overflow-hidden selection:bg-[#D7CCC8] selection:text-[#3E2723]">
-    <script>
-      // Global Error Handler to debug "Blank Screen" on mobile
-      window.onerror = function(message, source, lineno, colno, error) {
-        // Ignore resize loop errors which are benign
-        if(message === 'ResizeObserver loop limit exceeded') return;
-        
-        const root = document.getElementById('root');
-        if(root && root.childElementCount === 0) {
-            root.innerHTML = `
-                <div style="padding: 40px; color: #3E2723; font-family: sans-serif;">
-                    <h1 style="font-size: 24px; margin-bottom: 20px;">Unable to load app</h1>
-                    <p>Please try refreshing. If the issue persists, clear your browser data.</p>
-                    <div style="background: #EFEBE9; padding: 15px; border-radius: 8px; font-size: 12px; margin-top: 20px; font-family: monospace;">
-                        ${message} <br>
-                        ${source}:${lineno}
-                    </div>
-                </div>
-            `;
-        }
-      };
-    </script>
     <div id="root" class="h-full w-full"></div>
-    <script type="module" src="/index.tsx"></script>
+    <script type="module" src="./index.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {

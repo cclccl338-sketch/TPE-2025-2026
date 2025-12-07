@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
-import { TripData, START_DATE, ActivityType, DayPlan } from '../types';
+import { TripData, START_DATE, ActivityType, DayPlan, generateUUID } from '../types';
 
 interface OverviewProps {
   tripData: TripData;
@@ -57,7 +57,7 @@ const Overview: React.FC<OverviewProps> = ({ tripData, setTripData, onNavigateTo
   const handleAddItem = () => {
     if (!newItemText.trim()) return;
     const newItem = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       text: newItemText.trim(),
       checked: false
     };
@@ -88,7 +88,7 @@ const Overview: React.FC<OverviewProps> = ({ tripData, setTripData, onNavigateTo
   const handleAddPackingItem = () => {
     if (!newPackingItemText.trim()) return;
     const newItem = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       text: newPackingItemText.trim(),
       checked: false
     };

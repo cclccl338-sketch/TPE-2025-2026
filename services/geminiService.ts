@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { ActivityType, DayPlan } from "../types";
+import { ActivityType, DayPlan, generateUUID } from "../types";
 
 // Initialize Gemini Client
 // IMPORTANT: In a real production app, ensure API keys are secured.
@@ -58,7 +58,7 @@ export const generateDaySuggestion = async (date: string, preferences: string): 
     const data = JSON.parse(text);
     // Add IDs to activities
     if (data.activities) {
-        data.activities = data.activities.map((a: any) => ({...a, id: crypto.randomUUID()}));
+        data.activities = data.activities.map((a: any) => ({...a, id: generateUUID()}));
     }
     return data as DayPlan;
 

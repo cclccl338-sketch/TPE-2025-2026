@@ -49,3 +49,16 @@ export type Tab = 'overview' | 'itinerary' | 'weather' | 'map';
 export const START_DATE = '2025-12-15';
 export const END_DATE = '2026-01-05';
 export const DESTINATION = 'Taipei, Taiwan';
+
+// Safe UUID generator that works in non-secure contexts (HTTP) and older browsers
+export const generateUUID = () => {
+  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+    try {
+      return crypto.randomUUID();
+    } catch (e) {
+      // Fallback if crypto.randomUUID fails (e.g. insecure context)
+    }
+  }
+  // Simple fallback
+  return Date.now().toString(36) + Math.random().toString(36).substring(2);
+};
