@@ -13,6 +13,9 @@
     <!-- Error Handler: Catches startup errors and shows them on screen -->
     <script>
       window.onerror = function(message, source, lineno, colno, error) {
+        // Ignore resize observations errors which are harmless
+        if (message.includes('ResizeObserver loop')) return;
+        
         var overlay = document.createElement('div');
         overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:white;z-index:10000;padding:20px;color:#3E2723;font-family:sans-serif;overflow:auto;';
         overlay.innerHTML = '<h3 style="color:#A1887F">Application Error</h3><p><strong>Message:</strong> ' + message + '</p><p><strong>Source:</strong> ' + source + ':' + lineno + '</p><pre style="background:#f5f5f5;padding:10px;border-radius:4px;overflow:auto;">' + (error ? error.stack : 'No stack trace') + '</pre><button onclick="window.location.reload()" style="margin-top:20px;padding:10px 20px;background:#3E2723;color:white;border:none;border-radius:5px;">Reload App</button>';
@@ -44,8 +47,8 @@
 <script type="importmap">
 {
   "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
     "react": "https://aistudiocdn.com/react@^19.2.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.1/",
     "react/": "https://aistudiocdn.com/react@^19.2.1/",
     "@google/genai": "https://aistudiocdn.com/@google/genai@^1.31.0",
     "recharts": "https://aistudiocdn.com/recharts@^3.5.1",
@@ -57,7 +60,7 @@
 </head>
   <body class="bg-[#FAF9F6] text-[#1A120B] font-sans antialiased h-screen w-screen overflow-hidden selection:bg-[#D7CCC8] selection:text-[#3E2723]">
     <div id="root" class="h-full w-full"></div>
-    <script type="module" src="./index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
     <script>
       if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
