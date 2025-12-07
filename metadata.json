@@ -1,0 +1,7 @@
+{
+  "name": "Taiwan ",
+  "description": "A comprehensive travel companion for your Taipei trip from Dec 15, 2025 to Jan 5, 2026. Features itinerary management, budget visualization, weather insights, and map integration.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
