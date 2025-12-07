@@ -7,5 +7,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: true
+  },
+  define: {
+    // Prevents "process is not defined" crash in browser
+    'process.env': {} 
   }
 });

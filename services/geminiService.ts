@@ -1,11 +1,26 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { ActivityType, DayPlan, generateUUID } from "../types";
 
-// Initialize Gemini Client
-// IMPORTANT: In a real production app, ensure API keys are secured.
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// Helper to safely get AI instance
+// This prevents the app from crashing on load if process.env is undefined
+const getAI = () => {
+  try {
+    const apiKey = process.env.API_KEY;
+    if (!apiKey) {
+      console.warn("Gemini API Key is missing. AI features will be disabled.");
+      return null;
+    }
+    return new GoogleGenAI({ apiKey });
+  } catch (e) {
+    console.warn("Error initializing Gemini client:", e);
+    return null;
+  }
+};
 
 export const generateDaySuggestion = async (date: string, preferences: string): Promise<DayPlan | null> => {
+  const ai = getAI();
+  if (!ai) return null;
+
   const modelId = "gemini-2.5-flash";
   
   const prompt = `
@@ -69,6 +84,22 @@ export const generateDaySuggestion = async (date: string, preferences: string): 
 };
 
 export const getWeatherAdvice = async (latitude: number, longitude: number) => {
+  const ai = getAI();
+  
+  // Fallback immediately if no AI (prevents getting stuck in loading state)
+  if (!ai) {
+    return {
+      forecast: [
+        { dayName: "Offline", temp: "--", condition: "No Data", rainChance: "--" },
+        { dayName: "Offline", temp: "--", condition: "No Data", rainChance: "--" },
+        { dayName: "Offline", temp: "--", condition: "No Data", rainChance: "--" },
+      ],
+      clothingAdvice: "Unable to retrieve real-time forecast. Please check internet connection or API configuration.",
+      umbrellaNeeded: false,
+      generalOutlook: "Offline Mode"
+    };
+  }
+
   // Use googleSearch for real-time forecast grounding
   const modelId = "gemini-2.5-flash";
   
