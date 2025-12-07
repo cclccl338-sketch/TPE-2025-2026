@@ -5,7 +5,10 @@ import { ActivityType, DayPlan, generateUUID } from "../types";
 // This prevents the app from crashing on load if process.env is undefined
 const getAI = () => {
   try {
-    const apiKey = process.env.API_KEY;
+    // Safely check if process is defined (Node/Vite environment)
+    // In strict browser environments without shims, accessing 'process' directly throws ReferenceError
+    const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : undefined;
+    
     if (!apiKey) {
       console.warn("Gemini API Key is missing. AI features will be disabled.");
       return null;
