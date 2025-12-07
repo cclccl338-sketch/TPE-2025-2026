@@ -2,13 +2,16 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { ActivityType, DayPlan, generateUUID } from "../types";
 
 // Helper to safely get AI instance
-// This prevents the app from crashing on load if process.env is undefined
 const getAI = () => {
   try {
-    // Safely check if process is defined (Node/Vite environment)
-    // In strict browser environments without shims, accessing 'process' directly throws ReferenceError
-    const apiKey = (typeof process !== 'undefined' && process.env) ? process.env.API_KEY : undefined;
+    // Robust check to avoid ReferenceError if 'process' doesn't exist in browser
+    let apiKey = undefined;
+    if (typeof process !== 'undefined' && process.env) {
+      apiKey = process.env.API_KEY;
+    }
     
+    // In Vite, sometimes env vars are on import.meta.env, but we stick to process.env as requested
+    // If it's undefined, we return null gracefully instead of crashing
     if (!apiKey) {
       console.warn("Gemini API Key is missing. AI features will be disabled.");
       return null;

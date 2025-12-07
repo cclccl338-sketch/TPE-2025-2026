@@ -3,13 +3,14 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: '/', // Use root path for Netlify
+  base: './', 
   build: {
     outDir: 'dist',
     sourcemap: true
   },
   define: {
-    // Prevents "process is not defined" crash in browser
+    // This empty object prevents "process is not defined" crashes in the browser
+    // when code tries to access process.env
     'process.env': {} 
   }
 });
